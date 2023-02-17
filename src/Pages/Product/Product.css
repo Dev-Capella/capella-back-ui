@@ -1,0 +1,25 @@
+.p-chip.custom-chip {
+    background: var(--primary-color);
+    color: var(--primary-color-text);
+}
+
+
+.p-fileupload-content {
+    border: 0 none;
+}
+
+.p-fileupload-row {
+    display: none;
+}
+
+.p-progressbar{
+    display: none;
+}
+
+.p-fileupload {
+    padding: 0;
+}
+
+.p-fileupload-buttonbar {
+    display: none;
+}
