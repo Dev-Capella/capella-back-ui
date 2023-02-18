@@ -1,53 +1,58 @@
-import React, { useState, useRef } from "react";
-import { DataTable } from "primereact/datatable";
-import { Column } from "primereact/column";
-import tagService from "../../Manager/Service/tagService";
-import { Button } from "primereact/button";
-import { Sidebar } from "primereact/sidebar";
-import { useQuery } from "react-query";
-import NewTag from "./NewTag";
-import DetailTag from "./DetailTag";
-import { Messages } from "primereact/messages";
-
-
+import React, { useState, useRef, useEffect } from 'react'
+import { DataTable } from 'primereact/datatable'
+import { Column } from 'primereact/column'
+import tagService from '../../Manager/Service/tagService'
+import { Button } from 'primereact/button'
+import { Sidebar } from 'primereact/sidebar'
+import { useQuery } from 'react-query'
+import NewTag from './NewTag'
+import DetailTag from './DetailTag'
+import { Messages } from 'primereact/messages'
+import { useSelector, useDispatch } from 'react-redux'
+import loadingReducer from '../../Manager/Reducers/loadingReducer'
 function TagList() {
-  const successMsg = useRef(null);
-  const {
-    data: tags,
-    isFetching,
-    isLoading,
-    refetch,
-  } = useQuery("tags", () => tagService.fetchTag(), {
-    refetchOnWindowFocus: true,
-    staleTime: 0,
-    cacheTime: 0,
-    refetchInterval: 0,
-  });
-
-  const [newSideVisible, setNewSideVisible] = useState(false);
-  const [detailSideVisible, setDetailSideVisible] = useState(false);
-  const [selectedTagRow, setSelectedTagRow] = useState(false);
-  const [succesAdded, setSuccessAdded] = useState(false);
+  const successMsg = useRef(null)
+  const { data: tags, isFetching, isLoading, refetch } = useQuery(
+    'tags',
+    () => tagService.fetchTag(),
+    {
+      refetchOnWindowFocus: true,
+      staleTime: 0,
+      cacheTime: 0,
+      refetchInterval: 0,
+    },
+  )
+  const dispatch = useDispatch()
+  useEffect(() => {
+    dispatch(loadingReducer.actions.setLoading(true))
+  }, [])
+  if (!isLoading) {
+    dispatch(loadingReducer.actions.setLoading(false))
+  }
+  const [newSideVisible, setNewSideVisible] = useState(false)
+  const [detailSideVisible, setDetailSideVisible] = useState(false)
+  const [selectedTagRow, setSelectedTagRow] = useState(false)
+  const [succesAdded, setSuccessAdded] = useState(false)
 
   const test = (event) => {
-    setDetailSideVisible(event);
+    setDetailSideVisible(event)
 
-    refetch();
-  };
+    refetch()
+  }
 
   const test1 = (event) => {
-    setNewSideVisible(event);
+    setNewSideVisible(event)
 
-    refetch();
-  };
+    refetch()
+  }
   const savedTag = () => {
-    setNewSideVisible(true);
-  };
+    setNewSideVisible(true)
+  }
 
   const onRowClicked = (data) => {
-    setSelectedTagRow(data);
-    setDetailSideVisible(true);
-  };
+    setSelectedTagRow(data)
+    setDetailSideVisible(true)
+  }
 
   return (
     <div className="grid">
@@ -55,7 +60,7 @@ function TagList() {
       <Sidebar
         visible={newSideVisible}
         position="right"
-        style={{ width: "25em" }}
+        style={{ width: '25em' }}
         onHide={() => setNewSideVisible(false)}
       >
         <h3>Yeni Etiket</h3>
@@ -68,7 +73,7 @@ function TagList() {
       <Sidebar
         visible={detailSideVisible}
         position="right"
-        style={{ width: "25em" }}
+        style={{ width: '25em' }}
         onHide={() => setDetailSideVisible(false)}
       >
         <h3>{selectedTagRow.name}</h3>
@@ -95,12 +100,12 @@ function TagList() {
             paginator
             rows={10}
             dataKey="code"
-            key={"code"}
+            key={'code'}
             filterDisplay="menu"
             loading={isFetching}
             responsiveLayout="scroll"
             emptyMessage="Kayıt bulunamadı"
-            rowClassName={"cursor-pointer"}
+            rowClassName={'cursor-pointer'}
             rowHover={true}
             onRowClick={(e) => onRowClicked(e.data)}
           >
@@ -109,7 +114,7 @@ function TagList() {
         </div>
       </div>
     </div>
-  );
+  )
 }
 
-export default TagList;
+export default TagList

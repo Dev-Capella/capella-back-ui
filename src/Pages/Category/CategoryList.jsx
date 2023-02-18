@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { TreeTable } from 'primereact/treetable'
 import { Column } from 'primereact/column'
 import { useQuery } from 'react-query'
@@ -6,7 +6,8 @@ import { Button } from 'primereact/button'
 import categoryService from '../../Manager/Service/categoryService'
 import { useNavigate } from 'react-router-dom'
 import { Tree } from 'primereact/tree'
-
+import { useSelector, useDispatch } from 'react-redux'
+import loadingReducer from '../../Manager/Reducers/loadingReducer'
 export default function Category() {
   const [editMode, setEditMode] = useState(false)
   const { data, isLoading, refetch } = useQuery('categories', () =>
@@ -14,6 +15,13 @@ export default function Category() {
   )
   const navigate = useNavigate()
   const [isAddLoading, setIsAddLoading] = useState(false)
+  const dispatch = useDispatch()
+  useEffect(() => {
+    dispatch(loadingReducer.actions.setLoading(true))
+  }, [])
+  if (!isLoading) {
+    dispatch(loadingReducer.actions.setLoading(false))
+  }
   const setNodes = (event) => {
     const sourceCode = event.dragNode.data.code
 

@@ -1,58 +1,67 @@
-import React, { useState } from "react";
-import { DataTable } from "primereact/datatable";
-import { Column } from "primereact/column";
-import classificationService from "../../Manager/Service/classificationService";
-import { useService } from "../../Hooks/useService";
-import { Button } from "primereact/button";
-import { useNavigate } from "react-router-dom";
-import { Sidebar } from "primereact/sidebar";
-import NewClassification from "./NewClassification";
-import { Chip } from 'primereact/chip';
-import { useQuery } from "react-query";
-import DetailClassification from "./DetailClassification";
+import React, { useState, useEffect } from 'react'
+import { DataTable } from 'primereact/datatable'
+import { Column } from 'primereact/column'
+import classificationService from '../../Manager/Service/classificationService'
+import { useService } from '../../Hooks/useService'
+import { Button } from 'primereact/button'
+import { useNavigate } from 'react-router-dom'
+import { Sidebar } from 'primereact/sidebar'
+import NewClassification from './NewClassification'
+import { Chip } from 'primereact/chip'
+import { useQuery } from 'react-query'
+import DetailClassification from './DetailClassification'
+import { useSelector, useDispatch } from 'react-redux'
+import loadingReducer from '../../Manager/Reducers/loadingReducer'
 function ClassificationList() {
-  const [newSideVisible, setNewSideVisible] = useState(false);
-  const [detailSideVisible, setDetailSideVisible] = useState(false);
-  const [selectedTagRow, setSelectedTagRow] = useState(false);
-  const navigate = useNavigate();
+  const [newSideVisible, setNewSideVisible] = useState(false)
+  const [detailSideVisible, setDetailSideVisible] = useState(false)
+  const [selectedTagRow, setSelectedTagRow] = useState(false)
+  const navigate = useNavigate()
   const {
     data: classifications,
     isFetching,
+    isLoading,
     refetch,
-  } = useQuery("classifications", () =>
-    classificationService.fetchClassifications()
-  );
-
+  } = useQuery('classifications', () =>
+    classificationService.fetchClassifications(),
+  )
+  const dispatch = useDispatch()
+  useEffect(() => {
+    dispatch(loadingReducer.actions.setLoading(true))
+  }, [])
+  if (!isLoading) {
+    dispatch(loadingReducer.actions.setLoading(false))
+  }
   const actionBodyTemplate = (rowData) => {
     return (
       <React.Fragment>
         {rowData.options.map((option) => {
-          return <Chip label={option.name} className="mr-2 mb-2" />;
+          return <Chip label={option.name} className="mr-2 mb-2" />
         })}
       </React.Fragment>
-    );
-  };
+    )
+  }
 
   const addedClassification = (event) => {
-    setNewSideVisible(event);
-    refetch();
-  };
+    setNewSideVisible(event)
+    refetch()
+  }
   const test = (event) => {
-    setDetailSideVisible(event);
+    setDetailSideVisible(event)
 
-    refetch();
-  };
+    refetch()
+  }
   const onRowClicked = (data) => {
-    setSelectedTagRow(data);
-    setDetailSideVisible(true);
-  };
+    setSelectedTagRow(data)
+    setDetailSideVisible(true)
+  }
 
   return (
     <div className="grid">
       <Sidebar
         visible={newSideVisible}
         position="right"
-        style={{ width: "25em" }}
+        style={{ width: '25em' }}
         onHide={() => setNewSideVisible(false)}
       >
         <h3>Yeni Sınıflandırma</h3>
@@ -63,7 +72,7 @@ function ClassificationList() {
       <Sidebar
         visible={detailSideVisible}
         position="right"
-        style={{ width: "25em" }}
+        style={{ width: '25em' }}
         onHide={() => setDetailSideVisible(false)}
       >
         <h3>{selectedTagRow.name}</h3>
@@ -92,7 +101,7 @@ function ClassificationList() {
             loading={isFetching}
             responsiveLayout="scroll"
             emptyMessage="Kayıt bulunamadı"
-            rowClassName={"cursor-pointer"}
+            rowClassName={'cursor-pointer'}
             rowHover={true}
             onRowClick={(e) => onRowClicked(e.data)}
           >
@@ -106,7 +115,7 @@ function ClassificationList() {
         </div>
       </div>
     </div>
-  );
+  )
 }
 
-export default ClassificationList;
+export default ClassificationList

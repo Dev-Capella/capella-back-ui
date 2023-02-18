@@ -1,22 +1,29 @@
-import React,{useEffect, useRef} from 'react'
+import React, { useEffect, useRef } from 'react'
 import { DataTable } from 'primereact/datatable'
 import { Column } from 'primereact/column'
 import userService from '../../Manager/Service/userService.js'
 import { useService } from '../../Hooks/useService'
 import { useNavigate } from 'react-router-dom'
 import { Button } from 'primereact/button'
-import { ConfirmDialog, confirmDialog } from "primereact/confirmdialog";
-import ResponseStatus from "../../Manager/ResponseStatus";
-import { Messages } from "primereact/messages";
-import { Message } from "primereact/message";
-
+import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog'
+import ResponseStatus from '../../Manager/ResponseStatus'
+import { Messages } from 'primereact/messages'
+import { Message } from 'primereact/message'
+import { useSelector, useDispatch } from 'react-redux'
+import loadingReducer from '../../Manager/Reducers/loadingReducer'
 function UserManagement() {
-  const { data, isLoading, refetch } = useService("users", () =>
-    userService.getUsers()
-  );
-  const navigate = useNavigate();
-  const successMsg = useRef(null);
-
+  const { data, isLoading, refetch } = useService('users', () =>
+    userService.getUsers(),
+  )
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const successMsg = useRef(null)
+  useEffect(() => {
+    dispatch(loadingReducer.actions.setLoading(true))
+  }, [])
+  if (!isLoading) {
+    dispatch(loadingReducer.actions.setLoading(false))
+  }
   const actionBodyTemplate = ({ username }) => {
     return (
       <React.Fragment>
@@ -33,42 +40,42 @@ function UserManagement() {
           onClick={() => deleteConfirm(username)}
         ></Button>
       </React.Fragment>
-    );
-  };
+    )
+  }
 
   const deleteUser = (username) => {
     userService.deleteUser(username).then((result) => {
       if (result.status === ResponseStatus.SUCCESS) {
-        refetch();
+        refetch()
         successMsg.current.show([
           {
-            severity: "success",
-            summary: "Başarılı",
-            detail: username + " kullanıcısı silindi.",
+            severity: 'success',
+            summary: 'Başarılı',
+            detail: username + ' kullanıcısı silindi.',
             sticky: false,
           },
-        ]);
+        ])
       }
-    });
-  };
+    })
+  }
 
-  const reject = () => {};
+  const reject = () => {}
 
   const deleteConfirm = (username) => {
     confirmDialog({
-      message: "Kullanıcı siliniyor. Emin misiniz?",
-      header: "İşlem Onay",
-      icon: "pi pi-exclamation-triangle",
-      acceptLabel: "Evet",
-      rejectLabel: "Hayır",
+      message: 'Kullanıcı siliniyor. Emin misiniz?',
+      header: 'İşlem Onay',
+      icon: 'pi pi-exclamation-triangle',
+      acceptLabel: 'Evet',
+      rejectLabel: 'Hayır',
       accept: () => deleteUser(username),
       reject,
-    });
-  };
+    })
+  }
 
   const dateTemplate = (rowData, column) => {
-    return new Date(rowData["birthDate"]).toLocaleDateString();
-  };
+    return new Date(rowData['birthDate']).toLocaleDateString()
+  }
 
   return (
     <div className="grid">
@@ -100,14 +107,14 @@ function UserManagement() {
 
             <Column
               body={(e) => actionBodyTemplate(e)}
-              style={{ minWidth: "4rem" }}
-              bodyStyle={{ textAlign: "center", overflow: "visible" }}
+              style={{ minWidth: '4rem' }}
+              bodyStyle={{ textAlign: 'center', overflow: 'visible' }}
             ></Column>
           </DataTable>
         </div>
       </div>
     </div>
-  );
+  )
 }
 
 export default UserManagement

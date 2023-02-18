@@ -1,30 +1,37 @@
-import React, { useRef, useState, useEffect } from "react";
-import { DataTable } from "primereact/datatable";
-import { Column } from "primereact/column";
-import supplierService from "../../Manager/Service/supplierService";
-import { useService } from "../../Hooks/useService";
-import { Button } from "primereact/button";
-import { useNavigate } from "react-router-dom";
-import { Dialog } from "primereact/dialog";
-import { InputText } from "primereact/inputtext";
-import { Messages } from "primereact/messages";
-import ResponseStatus from "../../Manager/ResponseStatus";
-import { ConfirmDialog, confirmDialog } from "primereact/confirmdialog";
-
+import React, { useRef, useState, useEffect } from 'react'
+import { DataTable } from 'primereact/datatable'
+import { Column } from 'primereact/column'
+import supplierService from '../../Manager/Service/supplierService'
+import { useService } from '../../Hooks/useService'
+import { Button } from 'primereact/button'
+import { useNavigate } from 'react-router-dom'
+import { Dialog } from 'primereact/dialog'
+import { InputText } from 'primereact/inputtext'
+import { Messages } from 'primereact/messages'
+import ResponseStatus from '../../Manager/ResponseStatus'
+import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog'
+import { useSelector, useDispatch } from 'react-redux'
+import loadingReducer from '../../Manager/Reducers/loadingReducer'
 function SupplierList() {
-  const [displayBasic, setDisplayBasic] = useState(false);
-  const [position, setPosition] = useState("center");
-  const successMsg = useRef(null);
-  const [code, setCode] = useState("");
-  const [name, setName] = useState("");
-  const [isActive, setIsActive] = useState();
+  const [displayBasic, setDisplayBasic] = useState(false)
+  const [position, setPosition] = useState('center')
+  const successMsg = useRef(null)
+  const [code, setCode] = useState('')
+  const [name, setName] = useState('')
+  const [isActive, setIsActive] = useState()
 
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
-  const { data, isLoading, refetch } = useService("suppliers", () =>
-    supplierService.fetchSuppliers()
-  );
-
+  const { data, isLoading, refetch } = useService('suppliers', () =>
+    supplierService.fetchSuppliers(),
+  )
+  const dispatch = useDispatch()
+  useEffect(() => {
+    dispatch(loadingReducer.actions.setLoading(true))
+  }, [])
+  if (!isLoading) {
+    dispatch(loadingReducer.actions.setLoading(false))
+  }
   return (
     <div className="grid">
       <ConfirmDialog />
@@ -36,7 +43,7 @@ function SupplierList() {
             <Button
               className="p-button-raised p-button-sm font-bold"
               label="Ekle"
-              onClick={() => navigate("new")}
+              onClick={() => navigate('new')}
               icon="pi pi-plus font-bold"
             />
           </div>
@@ -49,7 +56,7 @@ function SupplierList() {
             loading={isLoading}
             responsiveLayout="scroll"
             emptyMessage="Kayıt bulunamadı"
-            rowClassName={"cursor-pointer"}
+            rowClassName={'cursor-pointer'}
             rowHover={true}
             onRowClick={(e) => navigate(e.data?.code)}
           >
@@ -62,7 +69,7 @@ function SupplierList() {
         </div>
       </div>
     </div>
-  );
+  )
 }
 
-export default SupplierList;
+export default SupplierList
