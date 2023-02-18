@@ -10,23 +10,24 @@ import Login from '../Pages/Login/Login'
 import ProductList from '../Pages/Product/ProductList'
 import NewProduct from '../Pages/Product/NewProduct'
 import UnitList from '../Pages/Unit/UnitList'
-import ClassificationList from "../Pages/Classification/ClassificationList";
-import NewClassification from "../Pages/Classification/NewClassification";
-import UserUpdate from "../Pages/User/UserUpdate";
-import BrandList from "../Pages/Brand/BrandList";
-import DetailBrand from "../Pages/Brand/DetailBrand";
-import DetailUnit from "../Pages/Unit/DetailUnit";
-import RolesList from "../Pages/Role/RolesList";
-import DetailRoles from "../Pages/Role/DetailRoles";
-import VariantList from "../Pages/Variant/VariantList";
-import SupplierList from "../Pages/Supplier/SupplierList";
-import DetailSupplier from "../Pages/Supplier/DetailSupplier";
-import AddSupplier from "../Pages/Supplier/AddSupplier";
-import TagList from "../Pages/Tag/TagList";
-import NewBrand from "../Pages/Brand/NewBrand";
+import ClassificationList from '../Pages/Classification/ClassificationList'
+import NewClassification from '../Pages/Classification/NewClassification'
+import UserUpdate from '../Pages/User/UserUpdate'
+import BrandList from '../Pages/Brand/BrandList'
+import DetailBrand from '../Pages/Brand/DetailBrand'
+import DetailUnit from '../Pages/Unit/DetailUnit'
+import RolesList from '../Pages/Role/RolesList'
+import DetailRoles from '../Pages/Role/DetailRoles'
+import VariantList from '../Pages/Variant/VariantList'
+import SupplierList from '../Pages/Supplier/SupplierList'
+import DetailSupplier from '../Pages/Supplier/DetailSupplier'
+import AddSupplier from '../Pages/Supplier/AddSupplier'
+import TagList from '../Pages/Tag/TagList'
+import NewBrand from '../Pages/Brand/NewBrand'
 import ProductDetail from '../Pages/Product/ProductDetail/ProductDetail'
-import BannerList from "../Pages/Banner/BannerList";
-import NewBanner from "../Pages/Banner/NewBanner";
+import BannerList from '../Pages/Banner/BannerList'
+import NewBanner from '../Pages/Banner/NewBanner'
+import DetailBanner from '../Pages/Banner/DetailBanner'
 
 const AppRoutes = ({ isAuthenticated }) => (
   <Routes>
@@ -67,7 +68,7 @@ const AppRoutes = ({ isAuthenticated }) => (
       </Route>
       <Route path="Banners" element={<Outlet />}>
         <Route index element={<BannerList />} />
-        {/* <Route path=":supplierId" index element={<DetailSupplier />} /> */}
+        <Route path=":bannerId" index element={<DetailBanner />} />
         <Route path="new" element={<NewBanner />} />
       </Route>
 
@@ -91,6 +92,6 @@ const AppRoutes = ({ isAuthenticated }) => (
       <Route path="login" element={<Login />} />
     </Route>
   </Routes>
-);
+)
 
 export default AppRoutes

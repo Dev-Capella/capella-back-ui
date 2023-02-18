@@ -97,7 +97,7 @@ function BannerList() {
             emptyMessage="Kayıt bulunamadı"
             rowClassName={'cursor-pointer'}
             rowHover={true}
-            onRowClick={(e) => onRowClicked(e.data)}
+            onRowClick={(e) => navigate(e.data?.code)}
           >
             <Column body={imageBodyTemplate} header="Görsel"></Column>
             <Column field="name" header="Başlık"></Column>
