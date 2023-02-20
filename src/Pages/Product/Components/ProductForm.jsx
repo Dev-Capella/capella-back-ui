@@ -62,6 +62,7 @@ export default function ProductForm() {
     handleSubmit,
   } = useForm({ defaultValues });
 
+  //test
   const onSubmit = (data) => {
     dispatch(loadingReducer.actions.setLoading(true));
     const productData = {
