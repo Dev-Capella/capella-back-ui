@@ -315,7 +315,7 @@ export default function ProductDetailForm() {
                       placeholder="Tedarikçi Seçin"
                       name="code"
                       isLoading={isSupplierLoading}
-                      options={supplierDatas}
+                      options={supplierDatas?.data}
                       control={control}
                       onChange={(e) => field.onChange(e.value)}
                       className={classNames({

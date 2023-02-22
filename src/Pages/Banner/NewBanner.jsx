@@ -16,7 +16,6 @@ function NewBanner() {
   const [images, setImages] = useState([]);
 
   const defaultValues = {
-    code: "",
     name: "",
     description: "",
     text: "",
