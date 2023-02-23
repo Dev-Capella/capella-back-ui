@@ -19,17 +19,17 @@ const defaultUserFormValues = {
   text: '',
   description: '',
   active: '',
+  bannerType:null
 }
 
 function DetailBanner() {
   const successMsg = useRef(null)
   const bannerTypes = bannersService.getBannerTypes();
   const [bannerName, setBannerName] = useState()
-  const [images, setImages] = useState()
+  const [images, setImages] = useState([]);
+  const [galleries, setGalleries] = useState([])
   const [id, setId] = useState()
-  const [file, setFile] = useState()
   const slug = useParams()
-  const [deletedCode, setDeletedCode] = useState()
   const navigate = useNavigate()
   const {
     control,
@@ -46,15 +46,12 @@ function DetailBanner() {
       setValue('text', result.data.text)
       setValue('active', result.data.active)
       setValue('description', result.data.description)
+      setValue('bannerType', bannerTypes.filter(type=>type.code===result.data.bannerType)[0])
       if (result.data.gallery !== null) {
-        setImages(result.data.gallery)
-
-        console.log(result.data.gallery)
+        setGalleries([result.data.gallery])
       }
-      setFile(result.data.file)
       setId(result.data.id)
       setBannerName(result.data.name)
-      setDeletedCode(result.data.code)
     })
   }, [])
   const getFormErrorMessage = (name) => {
@@ -62,12 +59,13 @@ function DetailBanner() {
       errors[name] && <small className="p-error">{errors[name].message}</small>
     )
   }
-  const accept = (newdata) => {
-    console.log(images)
-    newdata.id = id
-    newdata.gallery = images
-    newdata.file = file
-    bannersService.updateBanners(newdata).then((result) => {
+  const accept = (newData) => {
+    var data={...newData};
+    data.bannerType = newData.bannerType.code;
+    data.id = id
+    data.gallery = galleries.length >0 ? galleries[0]:null;
+    data.file = images.length>0 ? images[0]:null;
+    bannersService.updateBanners(data).then((result) => {
       if (result.status === ResponseStatus.SUCCESS) {
         navigate(-1)
       }
@@ -88,7 +86,7 @@ function DetailBanner() {
     })
   }
 
-  const deleteConfirm = () => {
+  /* const deleteConfirm = () => {
     confirmDialog({
       message: 'Banner siliniyor. Emin misiniz?',
       header: 'İşlem Onay',
@@ -105,6 +103,14 @@ function DetailBanner() {
         navigate(-1)
       }
     })
+  } */
+
+  const setImagesUpdate = (data) => {
+    setImages(data);
+
+    if(galleries.length>0){
+      setGalleries([]);
+    }
   }
   return (
     <div className="grid">
@@ -127,12 +133,6 @@ function DetailBanner() {
                   label="İptal"
                   icon="pi pi-times"
                   onClick={() => navigate(-1)}
-                />
-                <Button
-                  className="p-button-sm p-button-danger font-bold"
-                  label="Sil"
-                  icon="pi pi-trash"
-                  onClick={() => deleteConfirm()}
                 />
               </span>
             </div>
@@ -183,10 +183,9 @@ function DetailBanner() {
                     Kategori
                   </label>
                   <Dropdown
-                    value={field.bannerType}
                     options={bannerTypes}
+                    //onChange={data=>field.onChange(data)}
                     optionLabel="name"
-                    optionValue="code"
                     placeholder="Banner Kategorileri"
                     id={field.name}
                     {...field}
@@ -312,8 +311,10 @@ function DetailBanner() {
               </div>
               <div className="field md:col-12 col-12">
                 <FileUpload
-                  images={images?.medias}
-                  setImages={(data) => setImages(data?.medias)}
+                  galleries={galleries}
+                  setGalleries={(data)=>setGalleries(data)}
+                  images={images}
+                  setImages={(data) => setImagesUpdate(data)}
                 />
               </div>
             </form>
