@@ -11,6 +11,7 @@ import { InputTextarea } from 'primereact/inputtextarea'
 import { Messages } from 'primereact/messages'
 import FileUpload from '../../Components/FileUpload/FileUpload'
 import { InputSwitch } from 'primereact/inputswitch'
+import { Dropdown } from "primereact/dropdown";
 const defaultUserFormValues = {
   code: '',
   name: '',
@@ -22,6 +23,7 @@ const defaultUserFormValues = {
 
 function DetailBanner() {
   const successMsg = useRef(null)
+  const bannerTypes = bannersService.getBannerTypes();
   const [bannerName, setBannerName] = useState()
   const [images, setImages] = useState()
   const [id, setId] = useState()
@@ -167,6 +169,37 @@ function DetailBanner() {
                 />
                 {getFormErrorMessage('name')}
               </div>
+              <div className="field md:col-6 col-12">
+            <Controller
+              name="bannerType"
+              control={control}
+              rules={{ required: "Kategori zorunludur." }}
+              render={({ field, fieldState }) => (
+                <>
+                  <label
+                    htmlFor={field.bannerType}
+                    className={classNames({ "p-error": errors.bannerType })}
+                  >
+                    Kategori
+                  </label>
+                  <Dropdown
+                    value={field.bannerType}
+                    options={bannerTypes}
+                    optionLabel="name"
+                    optionValue="code"
+                    placeholder="Banner Kategorileri"
+                    id={field.name}
+                    {...field}
+                    autoFocus
+                    className={classNames({
+                      "p-invalid": fieldState.invalid,
+                    })}
+                  />
+                </>
+              )}
+            />
+            {getFormErrorMessage("bannerType")}
+          </div>
               <div className="field md:col-6 col-6">
                 <Controller
                   name="description"

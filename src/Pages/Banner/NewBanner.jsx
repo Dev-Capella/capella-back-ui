@@ -10,17 +10,19 @@ import { ConfirmDialog, confirmDialog } from "primereact/confirmdialog";
 import { InputSwitch } from "primereact/inputswitch";
 import FileUpload from "../../Components/FileUpload/FileUpload";
 import { Toast } from 'primereact/toast';
+import { Dropdown } from "primereact/dropdown";
 function NewBanner() {
   const navigate = useNavigate();
   const toast = useRef(null);
   const [images, setImages] = useState([]);
-
+  const bannerTypes = bannerService.getBannerTypes();
   const defaultValues = {
     name: "",
     description: "",
     text: "",
     link: "",
     active: true,
+    bannerType: ""
   };
 
   const {
@@ -123,6 +125,37 @@ function NewBanner() {
                 />
                 {getFormErrorMessage("name")}
               </div>
+              <div className="field md:col-6 col-12">
+            <Controller
+              name="bannerType"
+              control={control}
+              rules={{ required: "Kategori zorunludur." }}
+              render={({ field, fieldState }) => (
+                <>
+                  <label
+                    htmlFor={field.bannerType}
+                    className={classNames({ "p-error": errors.bannerType })}
+                  >
+                    Kategori
+                  </label>
+                  <Dropdown
+                    value={field.bannerType}
+                    options={bannerTypes}
+                    optionLabel="name"
+                    optionValue="code"
+                    placeholder="Banner Kategorileri"
+                    id={field.name}
+                    {...field}
+                    autoFocus
+                    className={classNames({
+                      "p-invalid": fieldState.invalid,
+                    })}
+                  />
+                </>
+              )}
+            />
+            {getFormErrorMessage("bannerType")}
+          </div>
               <div className="field md:col-6 col-12">
                 <Controller
                   name="description"

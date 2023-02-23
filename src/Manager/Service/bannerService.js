@@ -21,12 +21,22 @@ const deleteBanners = async (code) => {
   return result
 }
 
+const getBannerTypes = () => {
+  const data = [
+    { code: "0", name: "Carousel" },
+    { code: "1", name: "Top" },
+    { code: "2", name: "Card" },
+  ];
+  return data;
+};
+
 const exportFunction = {
   fetchBanners,
   addBanners,
   updateBanners,
   getByCode,
   deleteBanners,
+  getBannerTypes
 }
 
 export default exportFunction

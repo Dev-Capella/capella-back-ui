@@ -42,14 +42,14 @@ function BannerList() {
         src={
           rowData.gallery
             ? rowData.gallery.medias.filter(
-                (x) => x.mediaFormat.code === 'superzoom',
+                (x) => x.mediaFormat.code === 'original',
               )[0].absolutePath
             : 'https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png'
         }
         zoomSrc={
           rowData.gallery
             ? rowData.gallery.medias.filter(
-                (x) => x.mediaFormat.code === 'superzoom',
+                (x) => x.mediaFormat.code === 'original',
               )[0].absolutePath
             : 'https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png'
         }
