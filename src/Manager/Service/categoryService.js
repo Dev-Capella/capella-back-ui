@@ -12,8 +12,8 @@ const addCategory = async (categoryDto) =>{
 };
 
 const reOrderCategory = async (categoryReorderDto) =>{
-    var {data} = await axiosInstance.post('/category/reorder',categoryReorderDto);
-    return data;
+    var result = await axiosInstance.post('/category/reorder',categoryReorderDto);
+    return result;
 };
 
 const exportFunction = {

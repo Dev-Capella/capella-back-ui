@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom'
 import { Tree } from 'primereact/tree'
 import { useSelector, useDispatch } from 'react-redux'
 import loadingReducer from '../../Manager/Reducers/loadingReducer'
+import ResponseStatus from "../../Manager/ResponseStatus";
 export default function Category() {
   const [editMode, setEditMode] = useState(false)
   const { data, isLoading, refetch } = useQuery('categories', () =>
@@ -63,7 +64,7 @@ export default function Category() {
     }
     setIsAddLoading(true)
     categoryService.reOrderCategory(categoryReorderDto).then((result) => {
-      if (result) {
+      if (result.status==ResponseStatus.SUCCESS) {
         refetch()
       }
       setIsAddLoading(false)
