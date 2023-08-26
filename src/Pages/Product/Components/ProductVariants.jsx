@@ -18,6 +18,7 @@ import VariantItemAttributeValue from "./VariantItemAttributeValue";
 import { Menu } from "primereact/menu";
 import { Toast } from "primereact/toast";
 import { ProductContext } from "../Context/ProductContext";
+import mediaService from "../../../Manager/Service/mediaService";
 
 export default function ProductVariants() {
   const {
@@ -239,9 +240,26 @@ export default function ProductVariants() {
     }
     setVariantItems(_variantItems);
   };
+  const mediaSaveHandler = async (files) => {
+    const formData = new FormData();
+    files.forEach((file) => {
+      formData.append('Medias', file);
+    });
+    formData.append('Code', "c9e02ef7-e92f-4871-af90-aecc40cf6a7b");
+    
+    const data = {
+      Medias : formData,
+      Code:"c9e02ef7-e92f-4871-af90-aecc40cf6a7b"
+    }
 
+    
+    const mediaResult = await mediaService.saveMedia(data);
+    console.log(mediaResult)
+  }
   const mediasColumnBody = (data, options) => {
     if (data.files.length > 0) {
+      console.log(data)
+      mediaSaveHandler(data.files)
       //const fileUrl = URL.createObjectURL(data.files[0]);
       const fileUrl = data.files[0].url;
       return (

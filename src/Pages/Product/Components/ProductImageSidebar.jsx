@@ -60,11 +60,13 @@ export default function ProductImageSidebar() {
   const handleClick = (e) => {
     setShowButtonIndex(-1);
     e.preventDefault();
+    
     const fileInput = document.createElement("input");
     fileInput.type = "file";
     fileInput.accept = ".jpg, .jpeg, .png";
     fileInput.multiple = true;
     fileInput.onchange = (e) => {
+      console.log("ressss",e.target.files)
       const selectedFiles = e.target.files;
       setVariantItemFile([...selectedFiles]);
     };
